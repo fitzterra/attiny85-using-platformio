@@ -116,6 +116,73 @@ with a Pro Micro to make this configuration possible.
 In order to do the fuse setting or resetting, we need use a specific program on
 the programmer MCU (Pro Micro in this case). 
 
+This section of the repo has a [PlatformIO] initialised project for uploading
+and using the HVP code. This code has been adapted from [Ralph Bacon's][ATTiny85_Fuse_Resetter]
+adaptions of the code from others (lots of history here :-) ) to drive a HVP.
+
+The current version of the source is setup specifically for a Pro Micro as
+shown above, while the original intent was for an Uno. Adjusting the code is
+fairly easy for any other MCU (Nano, for example) to make it easy to simply
+plug the HVP board into another MCU, or the MCU into the HPV board.
+
+The main section in the code for this is as shown below:
+
+```c++
+/**
+ * The following pins works well with the Pro Micro I use. The programmer board
+ * has a set of female connectors added for the programmer interface, and a Pro
+ * Micro with male pins can plug directly into the programmer board, lining up
+ * on the GND pin.
+ **/
+#define  RST     2    // Output to level shifter for !RESET from transistor to Pin 1
+#define  CLKOUT  3    // Connect to Serial Clock Input (SCI) Pin 2
+#define  DATAIN  4    // Connect to Serial Data Output (SDO) Pin 7
+#define  INSTOUT 5    // Connect to Serial Instruction Input (SII) Pin 6
+#define  DATAOUT 6    // Connect to Serial Data Input (SDI) Pin 5
+#define  VCC     7    // Connect to VCC Pin 8
+```
+
+The `defines` uses the same names as per the circuit above. Simply find pins on
+your MCU that aligns mostly with `GND` and then assign them according to the
+names above.
+
+The `platformio.ini` included has environments set for both a Pro Micro (called
+`micro`) as well as a Nano (named `nano`). All example in this doc uses the
+`micro` environment.
+
+Once you are happy with your pin configs, connect the MCU and upload the sketch
+with:
+
+    $ pio run -e micro -t upload
+
+To test that the basics works, connect to the MCU and check the prompts are
+there:
+
+    $ pio run -e micro -t monitor
+
+This should give you the prompt as defined in the `promptChoice()` function in
+the code, and you can press `1` or `2` to test the functionality without
+connecting a battery or Attiny85 yet.
+
+Due to how the reset and boot loader works on the Pro Micro, it does not reset
+the MCU on connecting the monitor, so the initial message to switch on the 12V
+supply, and instructions on what to do, is not visible.  
+This is not a problem since at this point it is waiting for you input. Just
+press space and it will print the instructions again.
+
+## Using the HPV to manage the `RESET` pin
+
+Once you are ready to manage the `RESET`, insert the Attiny85 into the socket,
+connect to the MCU using:
+
+    $ pio run -e nano -t monitor
+
+As mentioned above, for the Pro Micro, just press space to refresh the prompt.
+
+Next connect the 12V battery, press `1` to enable the fuse for `RESET`
+functionality, or press `2` to enable the pin for GPIO.
+
+That's it!
 
 <!--Links -->
 [ISP]: ../ISP/
@@ -125,4 +192,5 @@ the programmer MCU (Pro Micro in this case).
 [Thingiverse]: https://thingiverse.com
 [OnShape]: http://onshape.com
 [DrawIO]: https://app.diagrams.net/
+[PlatformIO]: https://platformio.org/
 

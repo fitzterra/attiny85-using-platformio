@@ -13,7 +13,7 @@ This repo is collection of all that is needed to program an Attiny85 using
 
 The Attiny85 is a very capable MCU for small applications. It has 5 usable IO
 pins in the standard configuration, but can not easily connected to a USB port
-and programmed.
+for programming or serial communications.
 
 Furthermore, although it has 6 IO pins, only 5 is available since one is used
 as dedicated `RESET` pin needed for programming. There is a way to enable this
