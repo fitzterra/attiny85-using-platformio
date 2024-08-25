@@ -43,9 +43,9 @@ fuses so that the `RESET` function is available again, allowing it to be
 programmed again.
 
 To reset the fuses, you need a **High Voltage Programmer** which basically
-allows using a 12V programming pulse to reset the MCU fuses. This programmer is
-described in the [FuseResetter] section, as well as the process for doing the
-reset.
+allows programming new fuse settings while a using a high voltage (12V) on the
+reset pin of the MCU. This programmer is described in the [FuseResetter]
+section, as well as the process for doing the reset.
 
 
 <!-- Links -->
